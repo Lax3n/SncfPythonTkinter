@@ -14,7 +14,7 @@ import requests,MiseEnForme,formatageHeure,APIs,tkinter,tkinter.font
 
 if __name__=="__main__": #je demande si le programme exécuter est le bon
 
-    class Train():
+    class Etat():
         
         def __init__(self):
             self.GaresID= open("gares_et_ids.txt", "r", encoding="UTF-8") #j'ouvre ma "base de données"
@@ -69,6 +69,32 @@ if __name__=="__main__": #je demande si le programme exécuter est le bon
             return ["Impossible de trouvée des horaires"]
         
         
+        def firstWindow(self):
+            root = tkinter.Tk() #je crée la première fenêtre, je donne un titre, un icone, un fond, une taille
+            root.title("SNCF")
+            root.iconphoto(False,tkinter.PhotoImage(file="SNCF.png"))
+            root.configure(bg="#0084D4")
+            root.geometry("300x225")
+            root.resizable(height = False, width = False)
+            nomGareDepart:str="Gare de départ:"
+            nomGareArrivée:str="Gare d'arrivée:"
+            global msg1
+            global msg2
+            msg1=tkinter.StringVar() #je crée des variables qui change quand on mets des inputs dedans
+            msg2=tkinter.StringVar()
+            textGareDepart = tkinter.Label(root, text=f"{nomGareDepart:<70}",anchor="nw", font='Avenir 12',bg="#003865",fg="snow") #je mets tout en forme
+            textGareDepart.pack()
+            entreeGareDepart = tkinter.Entry(root, textvariable=msg1, bg="#EED484",font='Avenir 12',fg="#000000")
+            entreeGareDepart.pack(padx=37,pady=5)
+            textGareArrivee = tkinter.Label(root, text=f"{nomGareArrivée:<70}",anchor="nw", font='Avenir 12',bg="#003865",fg="snow")
+            textGareArrivee.pack()
+            entreeGareArrivee = tkinter.Entry(root, textvariable=msg2, bg="#EED484",font='Avenir 12',fg="#000000")
+            entreeGareArrivee.pack(pady=5,padx=37)
+            bouton = tkinter.Button(root,height=10, width="10", text="Recherche",font='Avenir 12',bg="#003865",activebackground="#DAAA00",activeforeground="#000000",fg="#FFFFFF",relief="flat",command=self.secondWindow) #je crée un bouton relier a une fonction quand on clique dessus
+            bouton.pack(pady=25)
+            root.mainloop()
+        
+        
         def secondWindow(self):
                 gareDepart=msg1.get().lower() #je vais chercher vos input et je les mets en minuscule (pour la bdd)
                 gareArrivee=msg2.get().lower()
@@ -83,14 +109,14 @@ if __name__=="__main__": #je demande si le programme exécuter est le bon
                 listehoraires = self.getTrain(gareDepart,gareArrivee, 32) #requête a l'api avec les gares demander
                 global canvasFenetreTrain
                 canvasFenetreTrain = tkinter.Canvas(fenetreTrain,background="#0084D4",width=self.largeurGrandeFenetre,height=self.hauteurGrandeFenetre) # dans ma fenêtre tk je crée un canvas avec une couleur de font et une hauteur, largeur
-                self.insideSecondWindow(listehoraires,0.0) #je lance la fonction qui affiche les horaires en fonction de la scroll bar
+                self.affichage(listehoraires,0.0) #je lance la fonction qui affiche les horaires en fonction de la scroll bar
                 global curseur #création d'un curseur sur la droite de la fenêtre qui est utilisable partout
                 curseur=tkinter.Scrollbar(fenetreTrain,orient="vertical",command=self.scrolle_bar) # la fonction scrolle_bar sera appeller à chaque fois qu'on bouge la scroll bar
                 curseur.pack(side=tkinter.RIGHT, fill=tkinter.BOTH)
                 canvasFenetreTrain.pack()
                 fenetreTrain.mainloop()       
         
-        def insideSecondWindow(self,listehoraire:list[str]=[],scrollposition:float=0.0): # cette fonction à pour but premier de faire descendre/monter les horaires quand on bouge la scroll bar
+        def affichage(self,listehoraire:list[str]=[],scrollposition:float=0.0): # cette fonction à pour but premier de faire descendre/monter les horaires quand on bouge la scroll bar
             realScrollPosition:int=int(scrollposition*1000) # la scroll bar renvoies un float entre 0 et 1 qui indique ça position, je le multiplie par 1000 pour avoir les déplacement en pixiel(environ)
             canvasFenetreTrain.delete('all') #je supprime tout ce qu'il y avait avant (rien si c'est le premier lancement)
             i=0
@@ -117,36 +143,9 @@ if __name__=="__main__": #je demande si le programme exécuter est le bon
                 self.tictac()
  
 
-        
-        def firstWindow(self):
-            root = tkinter.Tk() #je crée la première fenêtre, je donne un titre, un icone, un fond, une taille
-            root.title("SNCF")
-            root.iconphoto(False,tkinter.PhotoImage(file="SNCF.png"))
-            root.configure(bg="#0084D4")
-            root.geometry("300x225")
-            root.resizable(height = False, width = False)
-            nomGareDepart:str="Gare de départ:"
-            nomGareArrivée:str="Gare d'arrivée:"
-            global msg1
-            global msg2
-            msg1=tkinter.StringVar() #je crée des variables qui change quand on mets des inputs dedans
-            msg2=tkinter.StringVar()
-            textGareDepart = tkinter.Label(root, text=f"{nomGareDepart:<70}",anchor="nw", font='Avenir 12',bg="#003865",fg="snow") #je mets tout en forme
-            textGareDepart.pack()
-            entreeGareDepart = tkinter.Entry(root, textvariable=msg1, bg="#EED484",font='Avenir 12',fg="#000000")
-            entreeGareDepart.pack(padx=37,pady=5)
-            textGareArrivee = tkinter.Label(root, text=f"{nomGareArrivée:<70}",anchor="nw", font='Avenir 12',bg="#003865",fg="snow")
-            textGareArrivee.pack()
-            entreeGareArrivee = tkinter.Entry(root, textvariable=msg2, bg="#EED484",font='Avenir 12',fg="#000000")
-            entreeGareArrivee.pack(pady=5,padx=37)
-            bouton = tkinter.Button(root,height=10, width="10", text="Recherche",font='Avenir 12',bg="#003865",activebackground="#DAAA00",activeforeground="#000000",fg="#FFFFFF",relief="flat",command=self.secondWindow) #je crée un bouton relier a une fonction quand on clique dessus
-            bouton.pack(pady=25)
-            root.mainloop()
-
-      
         def scrolle_bar(self,inutile:str=...,scrollposition:str="0.0",*args): #sert a connaitre la position du cuseur (0.0 est la valeur de base), scrollposition changera tout seul quand le curseur bougera, le paramètre *agrs sert à ne pas avoir d'erreur si on clique sur les boutons de la scroll bar
             curseur.set(float(scrollposition),float(scrollposition)) #pour qu'il ne remonte pas toute seul (très chiant)
-            self.insideSecondWindow(listehoraire=listehoraires,scrollposition=float(scrollposition)) #je transmet la nouvelle position du curseur a la fonction qui affiche les horaires en fonction de la position du curseur
+            self.affichage(listehoraire=listehoraires,scrollposition=float(scrollposition)) #je transmet la nouvelle position du curseur a la fonction qui affiche les horaires en fonction de la position du curseur
         
         
         def tictac(self,auto:bool=False): #le but de cette fonction est de mettre a jour l'heure dans la fenêtre des horaires sans qu'il y est a scroll pour actualiser l'heure (auto a la valeur par défaut à False)
@@ -173,4 +172,4 @@ if __name__=="__main__": #je demande si le programme exécuter est le bon
             #-Alors datehoraire est un string, j'utilise la methode .count() sur datehoraire qui compte le string qu'on lui met en paramètre, si la méthode .count("/") return 2 alors c'est une date, donc // est une date (utiliser du regex aurait était plus simple)
 
 
-    train=Train() # on lance la machine
+    train=Etat() # on lance la machine
