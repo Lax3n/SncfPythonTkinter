@@ -7,7 +7,7 @@ remplacer par des tirets '-'. Exemple: Paris gare de lyon sera Paris-gare-de-lyo
 Cagnes sur mer sera Cagnes-sur-mer. Enfin il faut mettre le nom exacte contenu
 dans la base de donnée 'gares_et_ids.txt', rentré dans la fenetre: Paris, Marseille
 ne marche donc pas.
-
+Address du dépot github: https://github.com/Lax3n/SncfPythonTkinter
 """
 
 import requests,MiseEnForme,formatageHeure,APIs,tkinter,tkinter.font
@@ -170,7 +170,7 @@ if __name__=="__main__": #je demande si le programme exécuter est le bon
             return datehoraire.count("/")==2 
             #-Vraiment besoin d'expliquer?
             #-Oui
-            #-Alors datehoraire est un string, j'utilise la methode .count() sur datehoraire qui compte le string qu'on lui met en paramètre, si la méthode .count("/") return 2 alors c'est une date, donc // est une date
+            #-Alors datehoraire est un string, j'utilise la methode .count() sur datehoraire qui compte le string qu'on lui met en paramètre, si la méthode .count("/") return 2 alors c'est une date, donc // est une date (utiliser du regex aurait était plus simple)
 
 
     train=Train()
