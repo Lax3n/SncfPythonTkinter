@@ -173,4 +173,4 @@ if __name__=="__main__": #je demande si le programme exécuter est le bon
             #-Alors datehoraire est un string, j'utilise la methode .count() sur datehoraire qui compte le string qu'on lui met en paramètre, si la méthode .count("/") return 2 alors c'est une date, donc // est une date (utiliser du regex aurait était plus simple)
 
 
-    train=Train()
+    train=Train() # on lance la machine
