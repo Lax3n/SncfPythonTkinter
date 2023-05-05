@@ -1,8 +1,10 @@
 Bonjour voici un projet fais pour les cours.
 ## Pré-requis: 
-### pip :
+1. ## pip :
 - requests
-### python
+2. ## python
 - Python 3.9 minimun (doit pouvoir typer des paramètres dans des fonctions)
-## API
+3. ## API
 - Une clé d'API de la SNCF (faire une demande sur leurs site)
+4. ## Police d'écriture
+- Avenir-Medium.ttf (pour une meilleur expérience utilisateur)
